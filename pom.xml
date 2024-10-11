@@ -11,7 +11,7 @@
 	<groupId>apartment</groupId>
 	<artifactId>manager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>apartman</name>
+	<name>apartman-service</name>
 	<description>Service for managing apartments</description>
 	<url/>
 	<licenses>
