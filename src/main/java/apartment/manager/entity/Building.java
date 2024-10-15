@@ -1,4 +1,4 @@
-package apartment.manager.model;
+package apartment.manager.entity;
 
 import jakarta.persistence.*;
 

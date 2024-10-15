@@ -1,7 +1,6 @@
 package apartment.manager.repo;
 
-import apartment.manager.model.Apartment;
-import org.springframework.data.jpa.repository.JpaRepository;
+import apartment.manager.entity.Apartment;
 import org.springframework.stereotype.Repository;
 
 @Repository

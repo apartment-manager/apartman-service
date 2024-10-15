@@ -1,9 +1,8 @@
 package apartment.manager.business;
 
-import apartment.manager.model.Apartment;
-import apartment.manager.model.Building;
+import apartment.manager.entity.Apartment;
+import apartment.manager.entity.Building;
 import apartment.manager.repo.ApartmentRepository;
-import apartment.manager.repo.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +10,9 @@ import java.util.NoSuchElementException;
 
 @Service
 public class ApartmentService {
-    private ApartmentRepository apartmentRepository;
-    @Autowired
+    private final ApartmentRepository apartmentRepository;
     private BuildingService buildingService;
 
-    @Autowired
     public ApartmentService(ApartmentRepository apartmentRepository) {
         this.apartmentRepository = apartmentRepository;
     }
