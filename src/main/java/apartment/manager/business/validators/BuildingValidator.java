@@ -26,7 +26,7 @@ public class BuildingValidator {
             violations.forEach(violation -> {
                 errors.append(violation.getMessage()).append("\n");
             });
-            throw new GlobalException(errors.toString(), GlobalExceptionCode.ERROR_002, ValidationException.class);
+            throw new GlobalException(errors.toString(), GlobalExceptionCode.VALIDATION, ValidationException.class);
         }
 
     }

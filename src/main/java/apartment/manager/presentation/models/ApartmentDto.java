@@ -1,56 +1,28 @@
-package apartment.manager.entity;
+package apartment.manager.presentation.models;
 
-import apartment.manager.entity.utils.ApartmentType;
-import apartment.manager.entity.utils.Currency;
-import apartment.manager.entity.utils.PaymentDue;
-import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 
-import static apartment.manager.entity.Apartment.TABLE_NAME;
-
-@Entity
-@Table(name = TABLE_NAME)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Apartment extends BaseEntity {
-    public static final String TABLE_NAME = "apartments";
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "building_id")
-    private Building building;
-    @Column
+public class ApartmentDto extends BaseDto {
+    @NotBlank(message = "Apartment 'name' is a mandatory field")
     private String name;
-    @Column
-    private ApartmentType type;
-    @Column
+    @NotNull(message = "Apartment 'buildingId' is a mandatory field")
+    @Positive
+    private Long buildingId;
+    @Pattern(regexp = "^(APARTMENT|STORE)$", message = "Type must be either APARTMENT or STORE")
+    private String type;
     private String description;
-    @Column
     private Integer monthlyRentValue;
-    @Column
     private boolean isAvailable;
-    @Column
-    private Long tenantId; //TODO: create Tenant Entity and handle mapping
-    @Column
-    private Currency currency; // TODO: handle mapping
-    @Column
-    private PaymentDue paymentDue; // TODO: handle mapping
-    @Column
+    private Long tenantId;
+    @Pattern(regexp = "^(NIS|JOD|USD)$", message = "Currency must be either NIS, JOD, or USD")
+    private String currency;
+    @Pattern(regexp = "^(YEARLY|MONTHLY|HALF_YEARLY)$", message = "Payment due must be either YEARLY, HALF_YEARLY, or MONTHLY")
+    private String paymentDue;
     private String contractPicture;
-    @Column
     private Integer numberOfRooms;
-
-    public Apartment(Building building, String name) {
-        this.building = building;
-        this.name = name;
-    }
-
-    public Apartment() {
-    }
-
-    public Building getBuilding() {
-        return building;
-    }
-
-    public void setBuilding(Building building) {
-        this.building = building;
-    }
 
     public String getName() {
         return name;
@@ -60,11 +32,19 @@ public class Apartment extends BaseEntity {
         this.name = name;
     }
 
-    public ApartmentType getType() {
+    public Long getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingId(Long buildingId) {
+        this.buildingId = buildingId;
+    }
+
+    public String getType() {
         return type;
     }
 
-    public void setType(ApartmentType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -100,19 +80,19 @@ public class Apartment extends BaseEntity {
         this.tenantId = tenantId;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 
-    public PaymentDue getPaymentDue() {
+    public String getPaymentDue() {
         return paymentDue;
     }
 
-    public void setPaymentDue(PaymentDue paymentDue) {
+    public void setPaymentDue(String paymentDue) {
         this.paymentDue = paymentDue;
     }
 

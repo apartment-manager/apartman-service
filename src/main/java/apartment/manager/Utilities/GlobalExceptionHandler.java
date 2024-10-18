@@ -20,7 +20,7 @@ import java.util.Date;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Autowired
     ExceptionToHttpStatusMapper exceptionToHttpStatusMapper;
-
+/// TODO: handle version exceptions
     /**
      * Exception handler for {@link MethodArgumentNotValidException} This kind of exceptions is caused by violations to the validation Criteria defined by the
      * Annotations like {{@link jakarta.validation.constraints.NotBlank}}
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         errors.delete(errors.length() - 2, errors.length());
         errors.append("}");
-        return createErrorResponse(errors.toString(), HttpStatus.BAD_REQUEST, GlobalExceptionCode.ERROR_003, request);
+        return createErrorResponse(errors.toString(), HttpStatus.BAD_REQUEST, GlobalExceptionCode.VALIDATION, request);
     }
 
     @ExceptionHandler(GlobalException.class)

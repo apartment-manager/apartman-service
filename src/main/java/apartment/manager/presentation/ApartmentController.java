@@ -38,7 +38,7 @@ public class ApartmentController {
         return ResponseEntity.ok().body(apartmentService.getApartmentById(id));
     }
 
-    @GetMapping(path = "/all")
+    @GetMapping(path = "/building-apartments/{buildingId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ApartmentDto>> getBuildingApartments(@PathVariable("buildingId") long buildingId) {
         return ResponseEntity.ok().body(apartmentService.getApartmentsByBuildingId(buildingId));
@@ -46,8 +46,8 @@ public class ApartmentController {
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ApartmentDto> updateApartment(@RequestBody @Valid ApartmentDto apartmentDto) {
-        return ResponseEntity.ok(apartmentService.updateApartment(apartmentDto));
+    public ResponseEntity<ApartmentDto> updateApartment(@RequestBody @Valid ApartmentDto apartmentDto, @PathVariable Long id) {
+        return ResponseEntity.ok(apartmentService.updateApartment(apartmentDto, id));
     }
 
     @DeleteMapping(path = "/{id}")

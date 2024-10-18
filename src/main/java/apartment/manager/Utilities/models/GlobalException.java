@@ -7,7 +7,6 @@ public class GlobalException extends RuntimeException {
         super(message);
         this.exception=exceptionType;
         this.code=code;
-
     }
 
     public Class<? extends Exception> getException() {
