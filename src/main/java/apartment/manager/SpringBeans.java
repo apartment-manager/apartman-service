@@ -1,10 +1,7 @@
 package apartment.manager;
 
 import apartment.manager.Utilities.ExceptionToHttpStatusMapper;
-import apartment.manager.Utilities.mappers.ApartmentMapper;
-import apartment.manager.Utilities.mappers.ApartmentMapperImpl;
-import apartment.manager.Utilities.mappers.BuildingMapper;
-import apartment.manager.Utilities.mappers.BuildingMapperImpl;
+import apartment.manager.Utilities.mappers.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,6 +19,8 @@ public class SpringBeans {
     public ApartmentMapper getApartmentMapper() {
         return new ApartmentMapperImpl();
     }
-
-
+    @Bean
+    public PaymentMapper getPaymentMapper() {
+        return new PaymentMapperImpl();
+    }
 }

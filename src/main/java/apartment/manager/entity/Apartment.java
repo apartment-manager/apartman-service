@@ -5,6 +5,8 @@ import apartment.manager.entity.utils.Currency;
 import apartment.manager.entity.utils.PaymentDue;
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 import static apartment.manager.entity.Apartment.TABLE_NAME;
 
 @Entity
@@ -28,13 +30,15 @@ public class Apartment extends BaseEntity {
     @Column
     private Long tenantId; //TODO: create Tenant Entity and handle mapping
     @Column
-    private Currency currency; // TODO: handle mapping
+    private Currency currency; // TODO: add proper validation message to show the acceptable values
     @Column
-    private PaymentDue paymentDue; // TODO: handle mapping
+    private PaymentDue paymentDue; // TODO: add proper validation message to show the acceptable values
     @Column
     private String contractPicture;
     @Column
     private Integer numberOfRooms;
+    @Column
+    private Date rentingStartDate;
 
     public Apartment(Building building, String name) {
         this.building = building;
@@ -130,5 +134,13 @@ public class Apartment extends BaseEntity {
 
     public void setNumberOfRooms(Integer numberOfRooms) {
         this.numberOfRooms = numberOfRooms;
+    }
+
+    public Date getRentingStartDate() {
+        return rentingStartDate;
+    }
+
+    public void setRentingStartDate(Date rentingStartDate) {
+        this.rentingStartDate = rentingStartDate;
     }
 }

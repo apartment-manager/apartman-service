@@ -38,22 +38,24 @@ public class ApartmentService { //TODO: implement service level validation for e
         return apartmentMapper.allApartmentToApartmentDto(apartmentRepository.findByBuildingId(id));
     }
 
-    public ApartmentDto updateApartment(ApartmentDto apartmentDto, Long id) { //TODO: handle updating only the changed fields
-        if (!isExist(id)) {
-            throw new GlobalException("Couldn't find a apartment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class);
-        }
-        Apartment apartment = apartmentMapper.apartmentDtoToApartment(apartmentDto);
-        apartment.setId(id);
-        Apartment updatedApartment = apartmentRepository.save(apartment);
-        return apartmentMapper.apartmentToApartmentDto(updatedApartment);
+    public ApartmentDto updateApartment(ApartmentDto apartmentDto, Long id) {
+        Apartment oldApartment = apartmentRepository.findById(id).orElseThrow(() -> new GlobalException("Couldn't find an apartment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class));
+        Apartment updatedApartment = apartmentMapper.apartmentDtoToApartment(apartmentDto);
+
+        updatedApartment.setId(id);
+        updatedApartment.setCreateDate(oldApartment.getCreateDate());
+        updatedApartment.setModifiedDate(oldApartment.getModifiedDate());
+        updatedApartment.setUserId(oldApartment.getUserId());
+
+        Apartment savedApartment = apartmentRepository.save(updatedApartment);
+        return apartmentMapper.apartmentToApartmentDto(savedApartment);
     }
 
-    public void deleteApartment(Long id) {
+    public void deleteApartment(Long id) {// TODO: Deleting an apartment should delete it's payments
         if (!isExist(id)) {
-            throw new GlobalException("Couldn't find a building with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class);
+            throw new GlobalException("Couldn't find an apartment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class);
         }
-        ApartmentDto apartment = getApartmentById(id);
-        apartmentRepository.delete(apartmentMapper.apartmentDtoToApartment(apartment));
+        apartmentRepository.deleteById(id);
     }
 
     public Long getNumberOfBuildingApartments(Building building, Long userId) {

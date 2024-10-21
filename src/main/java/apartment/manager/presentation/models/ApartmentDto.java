@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 
+import java.util.Date;
+
 public class ApartmentDto extends BaseDto {
     @NotBlank(message = "Apartment 'name' is a mandatory field")
     private String name;
@@ -23,6 +25,7 @@ public class ApartmentDto extends BaseDto {
     private String paymentDue;
     private String contractPicture;
     private Integer numberOfRooms;
+    private Date rentingStartDate;
 
     public String getName() {
         return name;
@@ -110,5 +113,13 @@ public class ApartmentDto extends BaseDto {
 
     public void setNumberOfRooms(Integer numberOfRooms) {
         this.numberOfRooms = numberOfRooms;
+    }
+
+    public Date getRentingStartDate() {
+        return rentingStartDate;
+    }
+
+    public void setRentingStartDate(Date rentingStartDate) {
+        this.rentingStartDate = rentingStartDate;
     }
 }

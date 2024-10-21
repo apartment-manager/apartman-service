@@ -4,22 +4,21 @@ import apartment.manager.entity.Building;
 import apartment.manager.presentation.models.BuildingDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper
-@Component // To be able to inject the mapper into other classes
 public abstract class BuildingMapper {
 
-   public abstract BuildingDto buildingToBuildingDto(Building building);
+    public abstract BuildingDto buildingToBuildingDto(Building building);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createDate", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "userId", ignore = true)
     public abstract Building buildingDtoToBuilding(BuildingDto buildingDto);
+
     public List<BuildingDto> allBuildingToBuildingDto(List<Building> buildings) {
         return buildings.stream().map(this::buildingToBuildingDto).collect(Collectors.toList());
     }

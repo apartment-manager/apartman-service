@@ -49,12 +49,15 @@ public class BuildingService { // TODO: implement service level validation for e
     }
 
     public BuildingDto updateBuilding(BuildingDto buildingDto, Long id) {
-        if (!isExist(id)) {
-            throw new GlobalException("Couldn't find a building with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class);
-        }
-        Building building = buildingMapper.buildingDtoToBuilding(buildingDto);
-        building.setId(id);
-        Building savedBuilding = buildingRepository.save(building);
+        Building oldBuilding = buildingRepository.findById(id).orElseThrow(() -> new GlobalException("Couldn't find a building with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class));
+        Building updatedBuilding = buildingMapper.buildingDtoToBuilding(buildingDto);
+
+        updatedBuilding.setId(id);
+        updatedBuilding.setCreateDate(oldBuilding.getCreateDate());
+        updatedBuilding.setModifiedDate(oldBuilding.getModifiedDate());
+        updatedBuilding.setUserId(oldBuilding.getUserId());
+
+        Building savedBuilding = buildingRepository.save(updatedBuilding);
         return buildingMapper.buildingToBuildingDto(savedBuilding);
     }
 
@@ -62,7 +65,7 @@ public class BuildingService { // TODO: implement service level validation for e
         return buildingRepository.existsById(id);
     }
 
-    public void deleteBuilding(Long id) {
+    public void deleteBuilding(Long id) {// TODO: Deleting a building should delete it's apartments
         if (!isExist(id)) {
             throw new GlobalException("Couldn't find a building with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class);
         }

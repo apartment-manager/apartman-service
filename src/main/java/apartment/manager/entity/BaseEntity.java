@@ -20,7 +20,7 @@ public class BaseEntity {
     Date modifiedDate;
     @Column
     Long userId;
-    @Version // TODO: learn how to use it
+    @Version
     Long version;
 
     public Long getId() {
