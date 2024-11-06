@@ -30,7 +30,7 @@ public class ApartmentService { //TODO: implement service level validation for e
     }
 
     public ApartmentDto getApartmentById(Long id) {
-        Apartment apartment = apartmentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Couldn't find an apartment with id :" + id));
+        Apartment apartment = apartmentRepository.findById(id).orElseThrow(() -> new GlobalException("Couldn't find an apartment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class));
         return apartmentMapper.apartmentToApartmentDto(apartment);
     }
 

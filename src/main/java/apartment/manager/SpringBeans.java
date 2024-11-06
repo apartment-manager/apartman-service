@@ -11,16 +11,20 @@ public class SpringBeans {
     public ExceptionToHttpStatusMapper getExceptionToHttpStatusMapper() {
         return new ExceptionToHttpStatusMapper();
     }
+
     @Bean
     public BuildingMapper getBuildingMapperImpl() {
         return new BuildingMapperImpl();
     }
+
     @Bean
     public ApartmentMapper getApartmentMapper() {
         return new ApartmentMapperImpl();
     }
+
     @Bean
     public PaymentMapper getPaymentMapper() {
         return new PaymentMapperImpl();
     }
+
 }
