@@ -1,16 +1,18 @@
 package apartment.manager.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
+    @Column
     private String name;
+    @Column
     private String password;
-    @Transient // TODO: This didn't work, find a way to drop user ID from users table
-    private Long userId;
+    @Column
+    private String email;
+    @Transient
+    private Long userId; // TODO: This didn't work, find a way to drop user ID from users table
 
     public String getName() {
         return name;
@@ -26,5 +28,23 @@ public class User extends BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public Long getUserId() {
+        return userId;
+    }
+
+    @Override
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

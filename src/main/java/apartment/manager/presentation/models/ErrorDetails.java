@@ -1,12 +1,14 @@
 package apartment.manager.presentation.models;
 
 import apartment.manager.Utilities.models.GlobalExceptionCode;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
 public class ErrorDetails {
     private String message;
     private GlobalExceptionCode errorCode;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "EEE MMM dd HH:mm:ss zzz yyyy")
     private Date timeStamp;
 
     public ErrorDetails(String message, GlobalExceptionCode errorCode, Date timeStamp) {
