@@ -35,7 +35,7 @@ public class JwtProvider {
         Date now = new Date();
         // A signed JWT is called a 'JWS'
         String jws = Jwts.builder().subject(email).claims(new HashMap<>()).issuedAt(now)
-                .expiration(new Date(now.getTime() + 1000 * 60 * 60 * 24 * tokenValidityInDays)).signWith(key).compact();
+                .expiration(new Date(now.getTime() + 1000L * 60 * 60 * 24 * tokenValidityInDays)).signWith(key).compact();
         return jws;
     }
 
