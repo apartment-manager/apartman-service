@@ -10,7 +10,7 @@ import java.util.Date;
 import static apartment.manager.entity.Apartment.TABLE_NAME;
 
 @Entity
-@Table(name = TABLE_NAME)
+@Table(name = TABLE_NAME, uniqueConstraints = @UniqueConstraint(columnNames = {"name", "building_id"}))
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Apartment extends BaseEntity {
     public static final String TABLE_NAME = "apartments";
@@ -46,6 +46,13 @@ public class Apartment extends BaseEntity {
     }
 
     public Apartment() {
+    }
+
+    @PrePersist
+    public void setDefaults() {
+        if (this.currency == null) {
+            this.currency = Currency.NIS;
+        }
     }
 
     public Building getBuilding() {

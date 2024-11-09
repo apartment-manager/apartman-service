@@ -5,4 +5,5 @@ public enum GlobalExceptionCode {
     VALIDATION,// Errors related to the validation
     INCORRECT_VERSION, // Errors occurred because a PUT request included changes to a resource that conflict with those made by an earlier request
     AUTHENTICATION, // Authentication errors
+    UNIQUENESS, // Uniqueness errors
 }

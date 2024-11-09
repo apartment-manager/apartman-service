@@ -14,6 +14,7 @@ public class ApartmentDto extends BaseDto {
     @Positive
     private Long buildingId;
     @Pattern(regexp = "^(APARTMENT|STORE)$", message = "Type must be either APARTMENT or STORE")
+    @NotNull(message = "Apartment 'type' is a mandatory field")
     private String type;
     private String description;
     private Integer monthlyRentValue;

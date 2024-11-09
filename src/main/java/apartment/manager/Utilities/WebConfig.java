@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,20 +44,34 @@ public class WebConfig {
         return http.build();
     }
 
-
+    /**
+     * Creates a PasswordEncoder bean that uses BCrypt hashing algorithm.
+     * <p>
+     * This encoder is used to hash passwords before storing them and
+     * to verify passwords during authentication.
+     * BCrypt is a strong hashing algorithm that uses an adaptive approach,
+     * which makes it resistant to brute-force attacks.
+     *
+     * @return an instance of BCryptPasswordEncoder.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
-    }
-
+    /**
+     * Creates an AuthenticationManager bean using the default Spring Security configuration.
+     * <p>
+     * The AuthenticationManager is responsible for processing authentication requests.
+     * By retrieving it from the AuthenticationConfiguration, it leverages Spring Boot's
+     * autoconfiguration to use the defined AuthenticationProviders or UserDetailsService.
+     * <p>
+     * This bean is typically used to authenticate users programmatically.
+     *
+     * @param authenticationConfiguration the configuration object that provides the AuthenticationManager.
+     * @return an instance of AuthenticationManager.
+     * @throws Exception if an error occurs while creating the AuthenticationManager.
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();

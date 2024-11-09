@@ -26,7 +26,7 @@ public class ApartmentController {
         ApartmentDto savedApartment = apartmentService.createApartment(apartment);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest() // Builds URI based on the current request (i.e., /apartments)
-                .path("/{id}")         // Appends the ID of the created resource to the URI
+                .path("/{id}")
                 .buildAndExpand(savedApartment.getId()) // Replaces the placeholder with the new apartment ID
                 .toUri();
         return ResponseEntity.created(location).body(savedApartment);
@@ -55,5 +55,11 @@ public class ApartmentController {
     public ResponseEntity<String> deleteApartment(@PathVariable Long id) {
         apartmentService.deleteApartment(id);
         return ResponseEntity.ok("Apartment {" + id + "} was deleted successfully");
+    }
+
+    @GetMapping(path = "/search")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<ApartmentDto>> searchApartments(@RequestParam("query") String query) {
+        return ResponseEntity.ok().body(apartmentService.searchApartments(query));
     }
 }

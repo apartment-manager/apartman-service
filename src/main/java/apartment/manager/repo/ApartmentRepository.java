@@ -10,4 +10,5 @@ import java.util.List;
 public interface ApartmentRepository extends BaseRepository<Apartment, Long> {
     List<Apartment> findByBuildingId(Long buildingId);
     Long countByBuildingAndUserId(Building buildingId, Long userId);
+    List<Apartment> findByNameContainingIgnoreCase(String query);
 }

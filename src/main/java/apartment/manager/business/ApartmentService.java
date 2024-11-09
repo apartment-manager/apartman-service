@@ -8,6 +8,7 @@ import apartment.manager.entity.Building;
 import apartment.manager.presentation.models.ApartmentDto;
 import apartment.manager.repo.ApartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +27,13 @@ public class ApartmentService { //TODO: implement service level validation for e
 
     public ApartmentDto createApartment(ApartmentDto apartmentDto) {
         Apartment apartment = apartmentMapper.apartmentDtoToApartment(apartmentDto);
-        return apartmentMapper.apartmentToApartmentDto(apartmentRepository.save(apartment));
+        Apartment savedApartment;
+        try {
+            savedApartment = apartmentRepository.save(apartment);
+        } catch (DataIntegrityViolationException exception) {
+            throw new GlobalException("There exist an apartment with the name: {" + apartment.getName() + "} for the building: {" + apartment.getBuilding().getName() + "}", GlobalExceptionCode.UNIQUENESS, NoSuchElementException.class);
+        }
+        return apartmentMapper.apartmentToApartmentDto(savedApartment);
     }
 
     public ApartmentDto getApartmentById(Long id) {
@@ -49,6 +56,10 @@ public class ApartmentService { //TODO: implement service level validation for e
 
         Apartment savedApartment = apartmentRepository.save(updatedApartment);
         return apartmentMapper.apartmentToApartmentDto(savedApartment);
+    }
+
+    public List<ApartmentDto> searchApartments(String query) {
+        return apartmentMapper.allApartmentToApartmentDto(apartmentRepository.findByNameContainingIgnoreCase(query));
     }
 
     public void deleteApartment(Long id) {// TODO: Deleting an apartment should delete it's payments
