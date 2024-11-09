@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authorizationHeader = request.getHeader("Authorization");
         // Check if the Authorization header contains a Bearer token
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            chain.doFilter(request, response);
+            handleResponse("Authentication token doesn't exist or invalid. Please get a valid token and try again", response);
             return;
         }
         String token = authorizationHeader.substring(7);
