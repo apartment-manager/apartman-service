@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 
 @Component
@@ -35,9 +37,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain)
             throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
+        if (skipAuthentication(request)) {
+            chain.doFilter(request, response);
+            return;
+        }
         // Check if the Authorization header contains a Bearer token
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             handleResponse("Authentication token doesn't exist or invalid. Please get a valid token and try again", response);
@@ -79,5 +85,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonResponse = objectMapper.writeValueAsString(errorDetails);
         response.getWriter().write(jsonResponse);
+    }
+
+    private boolean skipAuthentication(HttpServletRequest request) {
+        return Arrays.stream(WebConfig.PUBLIC_URLS).anyMatch(path -> request.getRequestURI().startsWith(path.substring(0, path.length() - 2)));
     }
 }
