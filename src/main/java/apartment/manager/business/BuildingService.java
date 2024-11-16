@@ -37,6 +37,7 @@ public class BuildingService { // TODO: implement service level validation for e
 
     public BuildingDto getBuildingById(Long id) {
         Building building = buildingRepository.findById(id).orElseThrow(() -> new GlobalException("Couldn't find building with id :" + id, GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class));
+        building.setApartmentCount(apartmentRepository.countByBuildingAndUserId(building, 1L));
         return buildingMapper.buildingToBuildingDto(building);
     }
 
