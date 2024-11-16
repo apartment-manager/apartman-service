@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
-public class PaymentDto extends BaseDto{
+public class PaymentDto extends BaseDto {
     @NotNull(message = "Payment 'tenantId' is a required field")
     private Long tenantId;
     @NotNull(message = "Payment 'apartmentId' is a required field")
