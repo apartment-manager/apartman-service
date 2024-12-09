@@ -15,8 +15,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -56,20 +54,6 @@ public class WebConfig {
         return http.build();
     }
 
-    /**
-     * Creates a PasswordEncoder bean that uses BCrypt hashing algorithm.
-     * <p>
-     * This encoder is used to hash passwords before storing them and
-     * to verify passwords during authentication.
-     * BCrypt is a strong hashing algorithm that uses an adaptive approach,
-     * which makes it resistant to brute-force attacks.
-     *
-     * @return an instance of BCryptPasswordEncoder.
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     /**
      * Creates an AuthenticationManager bean using the default Spring Security configuration.

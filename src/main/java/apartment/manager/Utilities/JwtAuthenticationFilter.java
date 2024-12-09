@@ -2,8 +2,10 @@ package apartment.manager.Utilities;
 
 import apartment.manager.Utilities.models.GlobalExceptionCode;
 import apartment.manager.business.UserService;
+import apartment.manager.entity.User;
 import apartment.manager.presentation.models.ErrorDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -17,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,6 +26,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -54,10 +56,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (jwtProvider.validateToken(token) != null) {
                 String email = jwtProvider.getEmail(token);
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UserDetails userDetails = this.userService.loadUserByUsername(email);
+                    User user = this.userService.loadUserByUsername(email);
+                    Claims claims = jwtProvider.getClaims(token);
+                    Long userVersion = Long.parseLong((String) claims.get(JwtProvider.USER_VERSION_CLAIM));
+                    if (!Objects.equals(userVersion, user.getVersion())) {
+                        handleResponse("User details were changed. Please use a new token", response);
+                        return;
+                    }
                     // Set the authentication object into the context
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                            new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
