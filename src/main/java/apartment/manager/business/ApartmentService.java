@@ -92,7 +92,7 @@ public class ApartmentService { //TODO: implement service level validation for e
     /**
      * Updates the payment due dats for all the apartments
      */
-    @Scheduled(fixedRate = 1000 * 90, initialDelay = 1000 * 60)
+    @Scheduled(fixedRate = thirtyDays, initialDelay = 1000 * 60)
     public void updateApartmentPaymentDueDatesJob() {
         System.out.println("Starting scheduled job at:" + new Date());
         List<Apartment> apartments = apartmentRepository.findAll();
