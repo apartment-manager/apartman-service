@@ -1,11 +1,8 @@
 package apartment.manager.entity;
 
+import apartment.manager.business.models.BaseRentalDetails;
 import apartment.manager.entity.utils.ApartmentType;
-import apartment.manager.entity.utils.Currency;
-import apartment.manager.entity.utils.PaymentDue;
 import jakarta.persistence.*;
-
-import java.util.Date;
 
 import static apartment.manager.entity.Apartment.TABLE_NAME;
 
@@ -14,6 +11,7 @@ import static apartment.manager.entity.Apartment.TABLE_NAME;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Apartment extends BaseEntity {
     public static final String TABLE_NAME = "apartments";
+    public static final String RENTAL_DETAILS_FIELD = "rentalDetails";
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "building_id")
     private Building building;
@@ -24,21 +22,14 @@ public class Apartment extends BaseEntity {
     @Column
     private String description;
     @Column
-    private Integer monthlyRentValue;
+    private Boolean isAvailable;
+
     @Column
-    private boolean isAvailable;
-    @Column
-    private Long tenantId; //TODO: create Tenant Entity and handle mapping
-    @Column
-    private Currency currency; // TODO: add proper validation message to show the acceptable values
-    @Column
-    private PaymentDue paymentDue; // TODO: add proper validation message to show the acceptable values
-    @Column
-    private String contractPicture;
+    @Embedded
+    private BaseRentalDetails rentalDetails;
+
     @Column
     private Integer numberOfRooms;
-    @Column
-    private Date rentingStartDate;
 
     public Apartment(Building building, String name) {
         this.building = building;
@@ -48,12 +39,6 @@ public class Apartment extends BaseEntity {
     public Apartment() {
     }
 
-    @PrePersist
-    public void setDefaults() {
-        if (this.currency == null) {
-            this.currency = Currency.NIS;
-        }
-    }
 
     public Building getBuilding() {
         return building;
@@ -87,52 +72,12 @@ public class Apartment extends BaseEntity {
         this.description = description;
     }
 
-    public Integer getMonthlyRentValue() {
-        return monthlyRentValue;
-    }
-
-    public void setMonthlyRentValue(Integer monthlyRentValue) {
-        this.monthlyRentValue = monthlyRentValue;
-    }
-
     public boolean isAvailable() {
         return isAvailable;
     }
 
     public void setAvailable(boolean available) {
         isAvailable = available;
-    }
-
-    public Long getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
-
-    public PaymentDue getPaymentDue() {
-        return paymentDue;
-    }
-
-    public void setPaymentDue(PaymentDue paymentDue) {
-        this.paymentDue = paymentDue;
-    }
-
-    public String getContractPicture() {
-        return contractPicture;
-    }
-
-    public void setContractPicture(String contractPicture) {
-        this.contractPicture = contractPicture;
     }
 
     public Integer getNumberOfRooms() {
@@ -143,11 +88,11 @@ public class Apartment extends BaseEntity {
         this.numberOfRooms = numberOfRooms;
     }
 
-    public Date getRentingStartDate() {
-        return rentingStartDate;
+    public BaseRentalDetails getRentalDetails() {
+        return rentalDetails;
     }
 
-    public void setRentingStartDate(Date rentingStartDate) {
-        this.rentingStartDate = rentingStartDate;
+    public void setRentalDetails(BaseRentalDetails rentalDetails) {
+        this.rentalDetails = rentalDetails;
     }
 }

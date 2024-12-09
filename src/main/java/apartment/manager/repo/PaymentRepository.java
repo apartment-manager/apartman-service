@@ -8,4 +8,6 @@ import java.util.List;
 @Repository
 public interface PaymentRepository extends BaseRepository<Payment, Long> {
     List<Payment> findByApartmentId(Long apartmentId);
+
+    void deleteAllByApartmentId(Long apartmentId);
 }

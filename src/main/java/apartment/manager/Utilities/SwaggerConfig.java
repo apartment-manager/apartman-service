@@ -3,8 +3,6 @@
  */
 package apartment.manager.Utilities;
 
-import org.springdoc.core.models.GroupedOpenApi;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -16,15 +14,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
-    /**
-     * Defines a Swagger group for all APIs in the application, excluding
-     * certain paths (like disabled APIs) from being documented.
-     */
-    @Bean
-    public GroupedOpenApi adminApi() {
-        return GroupedOpenApi.builder()
-                .group("All APIs")                  // Defines the group name for Swagger UI
-                .pathsToExclude("/disabled/**")     // Excludes the specified paths from documentation
-                .build();
-    }
+//    /**
+//     * Defines a Swagger group for all APIs in the application, excluding
+//     * certain paths (like disabled APIs) from being documented.
+//     */
+//    @Bean
+//    public GroupedOpenApi adminApi() {
+//        return GroupedOpenApi.builder()
+//                .group("All APIs")                  // Defines the group name for Swagger UI
+//                .pathsToExclude("/disabled/**")     // Excludes the specified paths from documentation
+//                .build();
+//    }
 }

@@ -2,6 +2,7 @@ package apartment.manager.presentation;
 
 import apartment.manager.business.ApartmentService;
 import apartment.manager.presentation.models.ApartmentDto;
+import apartment.manager.presentation.models.RentalDetailsDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,18 @@ public class ApartmentController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ApartmentDto>> getBuildingApartments(@PathVariable("buildingId") long buildingId) {
         return ResponseEntity.ok().body(apartmentService.getApartmentsByBuildingId(buildingId));
+    }
+
+    @GetMapping(path = "/rent-apartment/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Boolean> rentApartment(@PathVariable("id") long id, @RequestBody @Valid RentalDetailsDto rentalDetailsDto) {
+        return ResponseEntity.ok().body(apartmentService.rentApartment(id, rentalDetailsDto));
+    }
+
+    @GetMapping(path = "/vacate-apartment/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Boolean> vacateApartment(@PathVariable("id") long id) {
+        return ResponseEntity.ok().body(apartmentService.vacateApartment(id));
     }
 
     @PutMapping(path = "/{id}")

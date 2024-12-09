@@ -1,7 +1,7 @@
 package apartment.manager.entity.utils;
 
-public enum PaymentDue {
+public enum Intervals {
     YEARLY,
     MONTHLY,
-    HALF_YEARLY
+    HALF_YEARLY;
 }

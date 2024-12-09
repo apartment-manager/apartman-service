@@ -1,7 +1,11 @@
 package apartment.manager.Utilities;
 
 import apartment.manager.business.UserService;
+import jakarta.annotation.PostConstruct;
+import lombok.NonNull;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,15 +26,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 public class WebConfig {
     public static final String[] PUBLIC_URLS = {"/swagger-ui/**", "/authentication/**"};
+    public static String TIMEZONE;
     @Autowired
     UserService userService;
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Value("${spring.jpa.properties.hibernate.jdbc.time_zone}")
+    private String timeZoneInitialHolder; // Gets the value of the timezone from the properties file to add it later to the static variable
+
+    @PostConstruct
+    public void init() {
+        TIMEZONE = timeZoneInitialHolder;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable) // New way to disable CSRF
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(PUBLIC_URLS).permitAll() // Permit the authentication endpoint
                         .anyRequest().authenticated() // Require authentication for all other requests
@@ -78,10 +90,10 @@ public class WebConfig {
     }
 
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
+    public WebMvcConfigurer corsConfig() {
         return new WebMvcConfigurer() {
             @Override
-            public void addCorsMappings(CorsRegistry registry) {
+            public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**") // Allow CORS for all endpoints
                         .allowedOriginPatterns("*") // Allow all origins
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow specific HTTP methods
@@ -89,5 +101,17 @@ public class WebConfig {
                         .allowCredentials(true); // Allow credentials
             }
         };
+    }
+
+    /**
+     * Defines a Swagger group for all APIs in the application, excluding
+     * certain paths (like disabled APIs) from being documented.
+     */
+    @Bean
+    public GroupedOpenApi adminApi() {
+        return GroupedOpenApi.builder()
+                .group("All APIs")                  // Defines the group name for Swagger UI
+                .pathsToExclude("/disabled/**")     // Excludes the specified paths from documentation
+                .build();
     }
 }

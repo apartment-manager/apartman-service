@@ -36,7 +36,7 @@ public class BuildingService { // TODO: implement service level validation for e
     }
 
     public BuildingDto getBuildingById(Long id) {
-        Building building = buildingRepository.findById(id).orElseThrow(() -> new GlobalException("Couldn't find building with id :" + id, GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class));
+        Building building = buildingRepository.findById(id).orElseThrow(() -> new GlobalException("Couldn't find building with id :" + id, GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
         building.setApartmentCount(apartmentRepository.countByBuildingAndUserId(building, 1L));
         return buildingMapper.buildingToBuildingDto(building);
     }
@@ -50,7 +50,7 @@ public class BuildingService { // TODO: implement service level validation for e
     }
 
     public BuildingDto updateBuilding(BuildingDto buildingDto, Long id) {
-        Building oldBuilding = buildingRepository.findById(id).orElseThrow(() -> new GlobalException("Couldn't find a building with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class));
+        Building oldBuilding = buildingRepository.findById(id).orElseThrow(() -> new GlobalException("Couldn't find a building with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
         Building updatedBuilding = buildingMapper.buildingDtoToBuilding(buildingDto);
 
         updatedBuilding.setId(id);
@@ -68,7 +68,7 @@ public class BuildingService { // TODO: implement service level validation for e
 
     public void deleteBuilding(Long id) {// TODO: Deleting a building should delete it's apartments
         if (!isExist(id)) {
-            throw new GlobalException("Couldn't find a building with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class);
+            throw new GlobalException("Couldn't find a building with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class);
         }
         buildingRepository.deleteById(id);
     }

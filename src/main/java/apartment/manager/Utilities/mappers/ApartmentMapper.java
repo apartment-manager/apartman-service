@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper
+@Mapper(uses = RentalDetailsMapper.class)
 public abstract class ApartmentMapper {
 
     @Autowired
@@ -21,13 +21,14 @@ public abstract class ApartmentMapper {
     BuildingMapper buildingMapper;
 
     @Mapping(target = "buildingId", source = "building.id")
+    @Mapping(target = Apartment.RENTAL_DETAILS_FIELD, source = Apartment.RENTAL_DETAILS_FIELD)
     public abstract ApartmentDto apartmentToApartmentDto(Apartment apartment);
-
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createDate", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "userId", ignore = true)
+    @Mapping(target = Apartment.RENTAL_DETAILS_FIELD, ignore = true)
     @Mapping(target = "building", source = "buildingId", qualifiedByName = "getBuildingById")
     public abstract Apartment apartmentDtoToApartment(ApartmentDto apartmentDto);
 

@@ -18,7 +18,9 @@ public class Payment extends BaseEntity {
     @Column
     private Date paymentDate;
     @Column
-    private Integer month;
+    private Integer paymentCoverageStartDate;
+    @Column
+    private Integer paymentCoverageEndDate;
     @Column
     private PaymentType paymentType;
     @Column
@@ -56,12 +58,20 @@ public class Payment extends BaseEntity {
         this.paymentDate = paymentDate;
     }
 
-    public Integer getMonth() {
-        return month;
+    public Integer getPaymentCoverageStartDate() {
+        return paymentCoverageStartDate;
     }
 
-    public void setMonth(Integer month) {
-        this.month = month;
+    public void setPaymentCoverageStartDate(Integer paymentCoverageStartDate) {
+        this.paymentCoverageStartDate = paymentCoverageStartDate;
+    }
+
+    public Integer getPaymentCoverageEndDate() {
+        return paymentCoverageEndDate;
+    }
+
+    public void setPaymentCoverageEndDate(Integer paymentCoverageEndDate) {
+        this.paymentCoverageEndDate = paymentCoverageEndDate;
     }
 
     public PaymentType getPaymentType() {

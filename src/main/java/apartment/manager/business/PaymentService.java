@@ -15,13 +15,11 @@ import java.util.NoSuchElementException;
 @Service
 public class PaymentService { //TODO: implement service level validation for entities
     private final PaymentRepository paymentRepository;
-    private final ApartmentService apartmentService;
     @Autowired
     private final PaymentMapper paymentMapper;
 
-    public PaymentService(PaymentRepository paymentRepository, ApartmentService apartmentService, PaymentMapper paymentMapper) {
+    public PaymentService(PaymentRepository paymentRepository, PaymentMapper paymentMapper) {
         this.paymentRepository = paymentRepository;
-        this.apartmentService = apartmentService;
         this.paymentMapper = paymentMapper;
     }
 
@@ -31,19 +29,19 @@ public class PaymentService { //TODO: implement service level validation for ent
     }
 
     public PaymentDto getPaymentById(Long id) {
-        Payment payment = paymentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Couldn't find a payment with id :" + id));
+        Payment payment = paymentRepository.findById(id).orElseThrow(() ->  new GlobalException("Couldn't find Payment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
         return paymentMapper.paymentToPaymentDto(payment);
     }
 
     public List<PaymentDto> getPaymentsByApartmentId(Long id) {
-        if (!apartmentService.isExist(id)) {
-            throw new GlobalException("Couldn't find an apartment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class);
-        }
+//        if (!apartmentService.isExist(id)) {
+//            throw new GlobalException("Couldn't find an apartment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class);
+//        }
         return paymentMapper.allPaymentsToPaymentDto(paymentRepository.findByApartmentId(id));
     }
 
     public PaymentDto updatePayment(PaymentDto paymentDto, Long id) {
-        Payment oldPayment = paymentRepository.findById(id).orElseThrow(() -> new GlobalException("Couldn't find a payment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class));
+        Payment oldPayment = paymentRepository.findById(id).orElseThrow(() -> new GlobalException("Couldn't find a payment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
         Payment updatedPayment = paymentMapper.paymentDtoToPayment(paymentDto);
 
         updatedPayment.setId(id);
@@ -57,9 +55,16 @@ public class PaymentService { //TODO: implement service level validation for ent
 
     public void deletePayment(Long id) {
         if (!isExist(id)) {
-            throw new GlobalException("Couldn't find a payment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class);
+            throw new GlobalException("Couldn't find a payment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class);
         }
         paymentRepository.deleteById(id);
+    }
+
+    public void deleteApartmentPayments(Long apartmentId) {
+//        if (!apartmentService.isExist(apartmentId)) {
+//            throw new GlobalException("Trying to delete payments for apartment {" + apartmentId + "} which doesn't exist", GlobalExceptionCode.VALIDATION, ValidationException.class);
+//        }
+        paymentRepository.deleteAllByApartmentId(apartmentId);
     }
 
 

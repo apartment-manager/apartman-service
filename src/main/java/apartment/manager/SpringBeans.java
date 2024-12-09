@@ -27,4 +27,8 @@ public class SpringBeans {
         return new PaymentMapperImpl();
     }
 
+    @Bean
+    public RentalDetailsMapper getRentalDetailsMapper() {
+        return new RentalDetailsMapperImpl();
+    }
 }
