@@ -1,4 +1,4 @@
-package apartment.manager.business.models;
+package apartment.manager.entity.details;
 
 import apartment.manager.Utilities.WebConfig;
 import apartment.manager.entity.Tenant;

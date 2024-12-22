@@ -1,18 +1,25 @@
 package apartment.manager.entity.utils;
 
+import apartment.manager.Utilities.JwtAuthenticationFilter;
 import apartment.manager.entity.BaseEntity;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.Date;
 
 public class BaseEntityListener {
+
+    @Autowired
+    HttpSession session;
 
     @PrePersist
     public void prePersist(BaseEntity baseEntity) {
         Date now = new Date();
         baseEntity.setCreateDate(now);
         baseEntity.setModifiedDate(now);  // When the entity is first created
-        baseEntity.setUserId(1L);  // TODO: customize the logic for setting userId
+        baseEntity.setUserId((Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE));
     }
 
     @PreUpdate

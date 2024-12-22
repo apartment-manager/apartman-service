@@ -5,11 +5,13 @@ import apartment.manager.entity.utils.PaymentType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.Filter;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "payments")
+@Filter(name = "userFilter", condition = "user_id  = :userId")
 public class Payment extends BaseEntity {
     @Column
     private Long tenantId;

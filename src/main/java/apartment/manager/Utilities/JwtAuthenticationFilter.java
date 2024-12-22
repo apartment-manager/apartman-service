@@ -13,6 +13,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,12 +32,14 @@ import java.util.Objects;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    public static final String USERNAME_SESSION_ATTRIBUTE = "username";
+    public static final String USER_ID_SESSION_ATTRIBUTE = "userId";
+    @Autowired
+    HttpSession session;
     @Autowired
     private JwtProvider jwtProvider;
-
     @Autowired
     private UserService userService;
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain)
@@ -68,6 +71,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                    session.setAttribute(USERNAME_SESSION_ATTRIBUTE, user.getName());
+                    session.setAttribute(USER_ID_SESSION_ATTRIBUTE, user.getId());
                 }
             }
         } catch (SecurityException | MalformedJwtException | io.jsonwebtoken.security.SignatureException e) {

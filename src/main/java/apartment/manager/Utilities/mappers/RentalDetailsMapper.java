@@ -1,6 +1,6 @@
 package apartment.manager.Utilities.mappers;
 
-import apartment.manager.business.models.BaseRentalDetails;
+import apartment.manager.entity.details.BaseRentalDetails;
 import apartment.manager.presentation.models.RentalDetailsDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -1,18 +1,20 @@
 package apartment.manager.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Filter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "buildings")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Filter(name = "userFilter", condition = "user_id  = :userId")
 public class Building extends BaseEntity {
+    public static final String APARTMENT_COUNT_FIELD_NAME = "apartmentCount";
     @Column
     private String name;
     @Column
     private String address;
-    public static final String APARTMENT_COUNT_FIELD_NAME = "apartmentCount";
     @Column
     private Long apartmentCount; //TODO: figure out how to fill this field
     @Column

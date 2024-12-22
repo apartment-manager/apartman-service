@@ -6,8 +6,10 @@ import lombok.NonNull;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -97,5 +99,15 @@ public class WebConfig {
                 .group("All APIs")                  // Defines the group name for Swagger UI
                 .pathsToExclude("/disabled/**")     // Excludes the specified paths from documentation
                 .build();
+    }
+
+    /**
+     * A bean used to register the cleanup filter
+     */
+    public FilterRegistrationBean<UserFilterCleanupFilter> userFilterCleanupFilter() {
+        FilterRegistrationBean<UserFilterCleanupFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new UserFilterCleanupFilter());
+        registrationBean.setOrder(Ordered.LOWEST_PRECEDENCE); // Run after all filters
+        return registrationBean;
     }
 }

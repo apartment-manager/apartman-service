@@ -1,12 +1,14 @@
 package apartment.manager.entity;
 
-import apartment.manager.business.models.BaseRentalDetails;
+import apartment.manager.entity.details.BaseRentalDetails;
 import apartment.manager.entity.utils.ApartmentType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Filter;
 
 import static apartment.manager.entity.Apartment.TABLE_NAME;
 
 @Entity
+@Filter(name = "userFilter", condition = "user_id  = :userId")
 @Table(name = TABLE_NAME, uniqueConstraints = @UniqueConstraint(columnNames = {"name", "building_id"}))
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Apartment extends BaseEntity {

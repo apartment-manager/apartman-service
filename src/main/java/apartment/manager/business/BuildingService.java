@@ -1,5 +1,6 @@
 package apartment.manager.business;
 
+import apartment.manager.Utilities.JwtAuthenticationFilter;
 import apartment.manager.Utilities.mappers.BuildingMapper;
 import apartment.manager.Utilities.models.GlobalException;
 import apartment.manager.Utilities.models.GlobalExceptionCode;
@@ -7,6 +8,7 @@ import apartment.manager.entity.Building;
 import apartment.manager.presentation.models.BuildingDto;
 import apartment.manager.repo.ApartmentRepository;
 import apartment.manager.repo.BuildingRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +23,8 @@ public class BuildingService { // TODO: implement service level validation for e
     private final BuildingRepository buildingRepository;
     public BuildingMapper buildingMapper;
     public ApartmentRepository apartmentRepository;// TODO: use apartment service instead
+    @Autowired
+    HttpSession session;
 
     @Autowired
     public BuildingService(BuildingRepository buildingRepository, ApartmentRepository apartmentRepository, BuildingMapper buildingMapper) {
@@ -36,21 +40,21 @@ public class BuildingService { // TODO: implement service level validation for e
     }
 
     public BuildingDto getBuildingById(Long id) {
-        Building building = buildingRepository.findById(id).orElseThrow(() -> new GlobalException("Couldn't find building with id :" + id, GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
-        building.setApartmentCount(apartmentRepository.countByBuildingAndUserId(building, 1L));
+        Building building = buildingRepository.findByIdAndUserId(id, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)).orElseThrow(() -> new GlobalException("Couldn't find building with id :" + id, GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
+        building.setApartmentCount(apartmentRepository.countByBuildingAndUserId(building, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)));
         return buildingMapper.buildingToBuildingDto(building);
     }
 
     public List<BuildingDto> getAllBuildings() {
-        List<Building> buildings = buildingRepository.findAll();
+        List<Building> buildings = buildingRepository.findAllByUserId((Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE));
         buildings.forEach(building -> {// TODO: handle getting user Id from session
-            building.setApartmentCount(apartmentRepository.countByBuildingAndUserId(building, 1L));
+            building.setApartmentCount(apartmentRepository.countByBuildingAndUserId(building, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)));
         });
         return buildingMapper.allBuildingToBuildingDto(buildings);
     }
 
     public BuildingDto updateBuilding(BuildingDto buildingDto, Long id) {
-        Building oldBuilding = buildingRepository.findById(id).orElseThrow(() -> new GlobalException("Couldn't find a building with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
+        Building oldBuilding = buildingRepository.findByIdAndUserId(id, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)).orElseThrow(() -> new GlobalException("Couldn't find a building with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
         Building updatedBuilding = buildingMapper.buildingDtoToBuilding(buildingDto);
 
         updatedBuilding.setId(id);

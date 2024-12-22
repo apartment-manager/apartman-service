@@ -1,4 +1,4 @@
-package apartment.manager.business.models;
+package apartment.manager.entity.details;
 
 public interface RentalDetails {
     void createPaymentDueDates();

@@ -5,10 +5,18 @@ import apartment.manager.entity.Building;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ApartmentRepository extends BaseRepository<Apartment, Long> {
-    List<Apartment> findByBuildingId(Long buildingId);
+    List<Apartment> findByBuildingIdAndUserId(Long buildingId, Long userId);
+
     Long countByBuildingAndUserId(Building buildingId, Long userId);
-    List<Apartment> findByNameContainingIgnoreCase(String query);
+
+    List<Apartment> findByNameContainingIgnoreCaseAndUserId(String query, Long userId);
+
+    Optional<Apartment> findByIdAndUserId(Long id, Long userId);
+
+    List<Apartment> findAllByUserId(Long userId);
+
 }

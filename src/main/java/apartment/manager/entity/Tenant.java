@@ -1,14 +1,16 @@
 package apartment.manager.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Filter;
 
 @Entity
 @Table(name = "Tenants")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Filter(name = "userFilter", condition = "user_id  = :userId")
 public class Tenant extends BaseEntity {
-   private String name;
-   private String idPhoto;
-   private String phoneNumber;
+    private String name;
+    private String idPhoto;
+    private String phoneNumber;
 
     public String getName() {
         return name;

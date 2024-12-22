@@ -1,19 +1,18 @@
-package apartment.manager.business.models;
+package apartment.manager.entity.details;
 
 import jakarta.persistence.Embeddable;
 
 import java.util.Date;
 
 @Embeddable
-public class HalfYearlyRentalDetails extends BaseRentalDetails {
-
-    public HalfYearlyRentalDetails(Date rentalStartDate) {
+public class MonthlyRentalDetails extends BaseRentalDetails {
+    MonthlyRentalDetails(Date rentalStartDate) {
         super(rentalStartDate);
         createPaymentDueDates();
     }
 
     @Override
     public int getNumberOfMonths() {
-        return 6;
+        return 1;
     }
 }
