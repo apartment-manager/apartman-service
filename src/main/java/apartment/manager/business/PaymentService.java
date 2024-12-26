@@ -37,7 +37,7 @@ public class PaymentService { //TODO: implement service level validation for ent
         return paymentMapper.paymentToPaymentDto(payment);
     }
 
-    public List<PaymentDto> getPaymentsByApartmentId(Long id) {
+    public List<PaymentDto> getYearlyPaymentsByApartmentId(Long id, int year) {
 //        if (!apartmentService.isExist(id)) {
 //            throw new GlobalException("Couldn't find an apartment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class);
 //        }

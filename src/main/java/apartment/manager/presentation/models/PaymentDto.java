@@ -7,14 +7,14 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 
 public class PaymentDto extends BaseDto {
-    @NotNull(message = "Payment 'tenantId' is a required field")
-    private Long tenantId;
     @NotNull(message = "Payment 'apartmentId' is a required field")
     private Long apartmentId;
     @NotNull(message = "Payment 'paymentDate' is a required field")
     private Date paymentDate;
     @NotNull(message = "Payment 'month' is a required field")
     private Integer month;
+    @NotNull(message = "Payment 'year' is a required field")
+    private Integer year;
     @NotNull(message = "Payment 'paymentType' is a required field")
     private PaymentType paymentType;
     @NotNull(message = "Payment 'value' is a required field")
@@ -23,14 +23,6 @@ public class PaymentDto extends BaseDto {
     private String notes;
     private Long chequeNumber;
     private Date chequeDueDate;
-
-    public Long getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
 
     public Long getApartmentId() {
         return apartmentId;
@@ -54,6 +46,14 @@ public class PaymentDto extends BaseDto {
 
     public void setMonth(Integer month) {
         this.month = month;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
     }
 
     public PaymentType getPaymentType() {

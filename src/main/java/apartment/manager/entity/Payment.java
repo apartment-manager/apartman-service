@@ -14,15 +14,13 @@ import java.util.Date;
 @Filter(name = "userFilter", condition = "user_id  = :userId")
 public class Payment extends BaseEntity {
     @Column
-    private Long tenantId;
-    @Column
     private Long apartmentId;
     @Column
     private Date paymentDate;
     @Column
-    private Integer paymentCoverageStartDate;
+    private Integer month;
     @Column
-    private Integer paymentCoverageEndDate;
+    private Integer year;
     @Column
     private PaymentType paymentType;
     @Column
@@ -35,14 +33,6 @@ public class Payment extends BaseEntity {
     private Long chequeNumber;
     @Column
     private Date chequeDueDate;
-
-    public Long getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
 
     public Long getApartmentId() {
         return apartmentId;
@@ -60,20 +50,20 @@ public class Payment extends BaseEntity {
         this.paymentDate = paymentDate;
     }
 
-    public Integer getPaymentCoverageStartDate() {
-        return paymentCoverageStartDate;
+    public Integer getMonth() {
+        return month;
     }
 
-    public void setPaymentCoverageStartDate(Integer paymentCoverageStartDate) {
-        this.paymentCoverageStartDate = paymentCoverageStartDate;
+    public void setMonth(Integer month) {
+        this.month = month;
     }
 
-    public Integer getPaymentCoverageEndDate() {
-        return paymentCoverageEndDate;
+    public Integer getYear() {
+        return year;
     }
 
-    public void setPaymentCoverageEndDate(Integer paymentCoverageEndDate) {
-        this.paymentCoverageEndDate = paymentCoverageEndDate;
+    public void setYear(Integer year) {
+        this.year = year;
     }
 
     public PaymentType getPaymentType() {

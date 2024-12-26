@@ -1,6 +1,7 @@
 package apartment.manager.presentation;
 
 import apartment.manager.business.PaymentService;
+import apartment.manager.presentation.models.ApartmentPaymentsRequestDto;
 import apartment.manager.presentation.models.PaymentDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -40,8 +41,8 @@ public class PaymentController {
 
     @GetMapping(path = "/apartment-payments/{apartmentId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<PaymentDto>> getApartmentPayments(@PathVariable("apartmentId") long apartmentId) {
-        return ResponseEntity.ok().body(paymentService.getPaymentsByApartmentId(apartmentId));
+    public ResponseEntity<List<PaymentDto>> getApartmentPayments(@PathVariable("apartmentId") long apartmentId, @RequestBody() @Valid ApartmentPaymentsRequestDto apartmentPaymentsRequestDto) {
+        return ResponseEntity.ok().body(paymentService.getYearlyPaymentsByApartmentId(apartmentId, apartmentPaymentsRequestDto.getYear()));
     }
 
     @PutMapping(path = "/{id}")

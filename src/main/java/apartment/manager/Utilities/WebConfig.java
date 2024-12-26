@@ -102,12 +102,13 @@ public class WebConfig {
     }
 
     /**
+     * TODO: drop filter definition
      * A bean used to register the cleanup filter
      */
-    public FilterRegistrationBean<UserFilterCleanupFilter> userFilterCleanupFilter() {
-        FilterRegistrationBean<UserFilterCleanupFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new UserFilterCleanupFilter());
-        registrationBean.setOrder(Ordered.LOWEST_PRECEDENCE); // Run after all filters
-        return registrationBean;
-    }
+//    public FilterRegistrationBean<UserFilterCleanupFilter> userFilterCleanupFilter() {
+//        FilterRegistrationBean<UserFilterCleanupFilter> registrationBean = new FilterRegistrationBean<>();
+//        registrationBean.setFilter(new UserFilterCleanupFilter());
+//        registrationBean.setOrder(Ordered.LOWEST_PRECEDENCE); // Run after all filters
+//        return registrationBean;
+//    }
 }
