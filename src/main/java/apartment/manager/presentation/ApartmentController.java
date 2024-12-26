@@ -45,13 +45,13 @@ public class ApartmentController {
         return ResponseEntity.ok().body(apartmentService.getApartmentsByBuildingId(buildingId));
     }
 
-    @GetMapping(path = "/rent-apartment/{id}")
+    @PostMapping(path = "/rent-apartment/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> rentApartment(@PathVariable("id") long id, @RequestBody @Valid RentalDetailsDto rentalDetailsDto) {
         return ResponseEntity.ok().body(apartmentService.rentApartment(id, rentalDetailsDto));
     }
 
-    @GetMapping(path = "/vacate-apartment/{id}")
+    @PostMapping(path = "/vacate-apartment/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> vacateApartment(@PathVariable("id") long id) {
         return ResponseEntity.ok().body(apartmentService.vacateApartment(id));

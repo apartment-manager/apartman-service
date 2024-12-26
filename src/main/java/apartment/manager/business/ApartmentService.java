@@ -2,6 +2,7 @@ package apartment.manager.business;
 
 import apartment.manager.Utilities.JwtAuthenticationFilter;
 import apartment.manager.Utilities.mappers.ApartmentMapper;
+import apartment.manager.Utilities.mappers.PaymentMapper;
 import apartment.manager.Utilities.mappers.RentalDetailsMapper;
 import apartment.manager.Utilities.models.GlobalException;
 import apartment.manager.Utilities.models.GlobalExceptionCode;
@@ -32,6 +33,7 @@ public class ApartmentService { //TODO: implement service level validation for e
     private static final long thirtyOneDays = 1000 * 60 * 60 * 24 * 31L;
     private static final long thirtyDays = 1000 * 60 * 60 * 24 * 30L;
     private final ApartmentRepository apartmentRepository;
+    private final Long userId;
     @Autowired
     HttpSession session;
     @Autowired
@@ -42,9 +44,12 @@ public class ApartmentService { //TODO: implement service level validation for e
     private PaymentService paymentService;
     @Autowired
     private TenantRepository tenantRepository;
+    @Autowired
+    private PaymentMapper paymentMapper;
 
     public ApartmentService(ApartmentRepository apartmentRepository) {
         this.apartmentRepository = apartmentRepository;
+        userId = (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE);
     }
 
     public ApartmentDto createApartment(ApartmentDto apartmentDto) {
@@ -64,11 +69,11 @@ public class ApartmentService { //TODO: implement service level validation for e
     }
 
     private Apartment getApartmentByIdWithoutMapping(Long id) {
-        return apartmentRepository.findByIdAndUserId(id, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)).orElseThrow(() -> new GlobalException("Couldn't find an apartment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
+        return apartmentRepository.findByIdAndUserId(id, userId).orElseThrow(() -> new GlobalException("Couldn't find an apartment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
     }
 
     public List<ApartmentDto> getApartmentsByBuildingId(Long id) {
-        return apartmentMapper.allApartmentToApartmentDto(apartmentRepository.findByBuildingIdAndUserId(id,(Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)));
+        return apartmentMapper.allApartmentToApartmentDto(apartmentRepository.findByBuildingIdAndUserId(id, userId));
     }
 
     public boolean rentApartment(Long id, RentalDetailsDto rentalDetailsDto) {
@@ -124,7 +129,7 @@ public class ApartmentService { //TODO: implement service level validation for e
     }
 
     public ApartmentDto updateApartment(ApartmentDto apartmentDto, Long id) {
-        Apartment oldApartment = apartmentRepository.findByIdAndUserId(id, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)).orElseThrow(() -> new GlobalException("Couldn't find an apartment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
+        Apartment oldApartment = apartmentRepository.findByIdAndUserId(id, userId).orElseThrow(() -> new GlobalException("Couldn't find an apartment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
         Apartment updatedApartment = apartmentMapper.apartmentDtoToApartment(apartmentDto);
 
         updatedApartment.setId(id);
@@ -137,7 +142,7 @@ public class ApartmentService { //TODO: implement service level validation for e
     }
 
     public List<ApartmentDto> searchApartments(String query) {
-        return apartmentMapper.allApartmentToApartmentDto(apartmentRepository.findByNameContainingIgnoreCaseAndUserId(query,(Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)));
+        return apartmentMapper.allApartmentToApartmentDto(apartmentRepository.findByNameContainingIgnoreCaseAndUserId(query, userId));
     }
 
     @Transactional
@@ -150,7 +155,30 @@ public class ApartmentService { //TODO: implement service level validation for e
     }
 
     public Long getNumberOfBuildingApartments(Building building) {
-        return apartmentRepository.countByBuildingAndUserId(building, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE));
+        return apartmentRepository.countByBuildingAndUserId(building, userId);
+    }
+
+    public int getNumberOfRentedApartments() {
+        return apartmentRepository.countByIsAvailableFalseAndUserId(userId);
+    }
+
+    public int getNumberOfVacatedApartments() {
+        return apartmentRepository.countByIsAvailableTrueAndUserId(userId);
+    }
+
+    public int getUnpaidOwedAmounts() {
+        return -1;
+//        List<Apartment> apartments = apartmentRepository.findAllByUserId(userId);
+//        List<Payment> payments;
+//        int unpaidOwedAmounts = 0;
+//        for (Apartment apartment : apartments) {
+//            payments = paymentMapper.allPaymentDtoToPayment(paymentService.getPaymentsByApartmentId(apartment.getId()));
+//            if (!apartment.isAvailable()) {
+//                if(payments.getLast().getPaymentCoverageEndDate())
+//                apartment.getRentalDetails().getMonthlyRentValue();
+//            }
+//        }
+
     }
 
     public boolean isExist(long id) {

@@ -40,7 +40,7 @@ public class PaymentController {
 
     @GetMapping(path = "/apartment-payments/{apartmentId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<PaymentDto>> getBuildingApartments(@PathVariable("apartmentId") long apartmentId) {
+    public ResponseEntity<List<PaymentDto>> getApartmentPayments(@PathVariable("apartmentId") long apartmentId) {
         return ResponseEntity.ok().body(paymentService.getPaymentsByApartmentId(apartmentId));
     }
 

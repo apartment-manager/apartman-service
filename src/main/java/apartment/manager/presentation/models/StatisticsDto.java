@@ -1,33 +1,33 @@
 package apartment.manager.presentation.models;
 
 public class StatisticsDto {
-    private double stat1 = 5.0;
-    private double stat2 = 6.5;
-    private double stat3 = 7.5;
+    private double rentedApartments = 5.0;
+    private double vacatedApartments = 6.5;
+    private double UnpaidOwedAmounts = 7.5;
     private double stat4 = 8.5;
 
-    public double getStat1() {
-        return stat1;
+    public double getRentedApartments() {
+        return rentedApartments;
     }
 
-    public void setStat1(double stat1) {
-        this.stat1 = stat1;
+    public void setRentedApartments(double rentedApartments) {
+        this.rentedApartments = rentedApartments;
     }
 
-    public double getStat2() {
-        return stat2;
+    public double getVacatedApartments() {
+        return vacatedApartments;
     }
 
-    public void setStat2(double stat2) {
-        this.stat2 = stat2;
+    public void setVacatedApartments(double vacatedApartments) {
+        this.vacatedApartments = vacatedApartments;
     }
 
-    public double getStat3() {
-        return stat3;
+    public double getUnpaidOwedAmounts() {
+        return UnpaidOwedAmounts;
     }
 
-    public void setStat3(double stat3) {
-        this.stat3 = stat3;
+    public void setUnpaidOwedAmounts(double unpaidOwedAmounts) {
+        this.UnpaidOwedAmounts = unpaidOwedAmounts;
     }
 
     public double getStat4() {

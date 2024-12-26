@@ -19,4 +19,8 @@ public interface ApartmentRepository extends BaseRepository<Apartment, Long> {
 
     List<Apartment> findAllByUserId(Long userId);
 
+    Integer countByIsAvailableFalseAndUserId(Long userId);
+
+    Integer countByIsAvailableTrueAndUserId(Long userId);
+
 }
