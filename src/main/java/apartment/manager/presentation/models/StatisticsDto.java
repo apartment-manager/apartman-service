@@ -4,7 +4,7 @@ public class StatisticsDto {
     private double rentedApartments = 5.0;
     private double vacatedApartments = 6.5;
     private double UnpaidOwedAmounts = 7.5;
-    private double stat4 = 8.5;
+    private double paidAmounts = 8.5;
 
     public double getRentedApartments() {
         return rentedApartments;
@@ -30,11 +30,11 @@ public class StatisticsDto {
         this.UnpaidOwedAmounts = unpaidOwedAmounts;
     }
 
-    public double getStat4() {
-        return stat4;
+    public double getPaidAmounts() {
+        return paidAmounts;
     }
 
-    public void setStat4(double stat4) {
-        this.stat4 = stat4;
+    public void setPaidAmounts(double paidAmounts) {
+        this.paidAmounts = paidAmounts;
     }
 }

@@ -17,8 +17,10 @@ public class Payment extends BaseEntity {
     private Long apartmentId;
     @Column
     private Date paymentDate;
+    public static final String MONTH_PAYMENT_PROPERTY = "month";
     @Column
     private Integer month;
+    public static final String YEAR_PAYMENT_PROPERTY = "YEAR";
     @Column
     private Integer year;
     @Column

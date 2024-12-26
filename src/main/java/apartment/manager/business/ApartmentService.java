@@ -13,6 +13,7 @@ import apartment.manager.entity.details.BaseRentalDetails;
 import apartment.manager.entity.details.RentalDetailsFactory;
 import apartment.manager.entity.utils.Intervals;
 import apartment.manager.presentation.models.ApartmentDto;
+import apartment.manager.presentation.models.PaymentDto;
 import apartment.manager.presentation.models.RentalDetailsDto;
 import apartment.manager.repo.ApartmentRepository;
 import apartment.manager.repo.TenantRepository;
@@ -24,6 +25,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
