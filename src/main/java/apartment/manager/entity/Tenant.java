@@ -1,12 +1,15 @@
 package apartment.manager.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.Filter;
 
 @Entity
 @Table(name = "Tenants")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Filter(name = "userFilter", condition = "user_id  = :userId")
+@Filter(name = "userFilter", condition = BaseEntity.CREATED_BY_DATABASE_PROPERTY + "  = :createdBy")
 public class Tenant extends BaseEntity {
     private String name;
     private String idPhoto;

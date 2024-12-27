@@ -9,18 +9,18 @@ import java.util.Optional;
 
 @Repository
 public interface ApartmentRepository extends BaseRepository<Apartment, Long> {
-    List<Apartment> findByBuildingIdAndUserId(Long buildingId, Long userId);
+    List<Apartment> findByBuildingIdAndCreatedBy(Long buildingId, Long userId);
 
-    Long countByBuildingAndUserId(Building buildingId, Long userId);
+    Long countByBuildingAndCreatedBy(Building buildingId, Long userId);
 
-    List<Apartment> findByNameContainingIgnoreCaseAndUserId(String query, Long userId);
+    List<Apartment> findByNameContainingIgnoreCaseAndCreatedBy(String query, Long userId);
 
-    Optional<Apartment> findByIdAndUserId(Long id, Long userId);
+    Optional<Apartment> findByIdAndCreatedBy(Long id, Long userId);
 
-    List<Apartment> findAllByUserId(Long userId);
+    List<Apartment> findAllByCreatedBy(Long userId);
 
-    Integer countByIsAvailableFalseAndUserId(Long userId);
+    Integer countByIsAvailableFalseAndCreatedBy(Long userId);
 
-    Integer countByIsAvailableTrueAndUserId(Long userId);
+    Integer countByIsAvailableTrueAndCreatedBy(Long userId);
 
 }

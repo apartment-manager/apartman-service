@@ -2,7 +2,6 @@ package apartment.manager.entity;
 
 import apartment.manager.entity.utils.BaseEntityListener;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 
@@ -10,11 +9,11 @@ import java.util.Date;
 
 @MappedSuperclass
 @EntityListeners(BaseEntityListener.class)
-@FilterDef(name = "userFilter", defaultCondition = "user_id  = :userId", parameters = @ParamDef(name = "userId", type = Long.class))
-//@Filter(name = "userFilter", condition = "user_id  = :userId")
+@FilterDef(name = "userFilter", defaultCondition = BaseEntity.CREATED_BY_DATABASE_PROPERTY + "  = :createdBy", parameters = @ParamDef(name = "createdBy", type = Long.class))
 public class BaseEntity {
-
     public static final String ID_FIELD_NAME = "id";
+    public static final String CREATED_BY_DATABASE_PROPERTY = "created_by";
+    public static final String CREATED_BY_PROPERTY = "createdBy";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -23,8 +22,8 @@ public class BaseEntity {
     Date createDate;
     @Column
     Date modifiedDate;
-    @Column(name = "user_id", nullable = false)
-    Long userId;
+    @Column(name = CREATED_BY_DATABASE_PROPERTY, nullable = false)
+    Long createdBy;
     @Version
     Long version;
 
@@ -52,12 +51,12 @@ public class BaseEntity {
         this.modifiedDate = modifiedDate;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getCreatedBy() {
+        return createdBy;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Long getVersion() {

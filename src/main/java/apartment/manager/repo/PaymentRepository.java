@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface PaymentRepository extends BaseRepository<Payment, Long> {
-    List<Payment> findByApartmentIdAndYearAndUserId(Long apartmentId, int year, Long userId, Sort sort);
-    Optional<Payment> findByIdAndUserId(Long id, Long userId);
+    List<Payment> findByApartmentIdAndYearAndCreatedBy(Long apartmentId, int year, Long userId, Sort sort);
+    Optional<Payment> findByIdAndCreatedBy(Long id, Long userId);
     void deleteAllByApartmentId(Long apartmentId);
 }

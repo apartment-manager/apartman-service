@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface BuildingRepository extends BaseRepository<Building, Long> {
-    Optional<Building> findByIdAndUserId(Long id, Long userId);
-    List<Building> findAllByUserId(Long userId);
+    Optional<Building> findByIdAndCreatedBy(Long id, Long userId);
+    List<Building> findAllByCreatedBy(Long userId);
 }

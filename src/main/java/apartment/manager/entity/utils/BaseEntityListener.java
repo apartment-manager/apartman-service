@@ -18,8 +18,8 @@ public class BaseEntityListener {
     public void prePersist(BaseEntity baseEntity) {
         Date now = new Date();
         baseEntity.setCreateDate(now);
-        baseEntity.setModifiedDate(now);  // When the entity is first created
-        baseEntity.setUserId((Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE));
+        baseEntity.setModifiedDate(now);  // When the entity was first created
+        baseEntity.setCreatedBy((Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE));
     }
 
     @PreUpdate

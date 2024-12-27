@@ -28,6 +28,10 @@ public class SpringBeans {
     public PaymentMapper getPaymentMapper() {
         return new PaymentMapperImpl();
     }
+    @Bean
+    public UserMapper getUserMapper() {
+        return new UserMapperImpl();
+    }
 
     @Bean
     public RentalDetailsMapper getRentalDetailsMapper() {

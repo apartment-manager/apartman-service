@@ -21,14 +21,14 @@ public abstract class ApartmentMapper {
     BuildingMapper buildingMapper;
 
     @Mapping(target = "buildingId", source = "building.id")
-    @Mapping(target = Apartment.RENTAL_DETAILS_FIELD, source = Apartment.RENTAL_DETAILS_FIELD)
+    @Mapping(target = Apartment.RENTAL_DETAILS_APARTMENT_FIELD, source = Apartment.RENTAL_DETAILS_APARTMENT_FIELD)
     public abstract ApartmentDto apartmentToApartmentDto(Apartment apartment);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createDate", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
-    @Mapping(target = "userId", ignore = true)
-    @Mapping(target = Apartment.RENTAL_DETAILS_FIELD, ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = Apartment.RENTAL_DETAILS_APARTMENT_FIELD, ignore = true)
     @Mapping(target = "building", source = "buildingId", qualifiedByName = "getBuildingById")
     public abstract Apartment apartmentDtoToApartment(ApartmentDto apartmentDto);
 

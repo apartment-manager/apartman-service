@@ -9,7 +9,6 @@ import java.util.Date;
 public class PaymentDto extends BaseDto {
     @NotNull(message = "Payment 'apartmentId' is a required field")
     private Long apartmentId;
-    @NotNull(message = "Payment 'paymentDate' is a required field")
     private Date paymentDate;
     @NotNull(message = "Payment 'month' is a required field")
     private Integer month;

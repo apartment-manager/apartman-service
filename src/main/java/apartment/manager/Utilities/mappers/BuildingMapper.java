@@ -16,7 +16,7 @@ public abstract class BuildingMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createDate", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
-    @Mapping(target = "userId", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
     public abstract Building buildingDtoToBuilding(BuildingDto buildingDto);
 
     public List<BuildingDto> allBuildingToBuildingDto(List<Building> buildings) {

@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 @Table(name = "buildings")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Filter(name = "userFilter", condition = "user_id  = :userId")
+@Filter(name = "userFilter", condition = BaseEntity.CREATED_BY_DATABASE_PROPERTY + "  = :createdBy")
 public class Building extends BaseEntity {
     public static final String APARTMENT_COUNT_FIELD_NAME = "apartmentCount";
     @Column

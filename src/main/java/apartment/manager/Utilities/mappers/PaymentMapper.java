@@ -1,8 +1,6 @@
 package apartment.manager.Utilities.mappers;
 
-import apartment.manager.entity.Building;
 import apartment.manager.entity.Payment;
-import apartment.manager.presentation.models.BuildingDto;
 import apartment.manager.presentation.models.PaymentDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,7 +16,7 @@ public abstract class PaymentMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createDate", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
-    @Mapping(target = "userId", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
     public abstract Payment paymentDtoToPayment(PaymentDto paymentDto);
 
     public List<PaymentDto> allPaymentsToPaymentDto(List<Payment> payments) {

@@ -34,7 +34,7 @@ public class PaymentService { //TODO: implement service level validation for ent
     }
 
     public PaymentDto getPaymentById(Long id) {
-        Payment payment = paymentRepository.findByIdAndUserId(id, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)).orElseThrow(() -> new GlobalException("Couldn't find Payment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
+        Payment payment = paymentRepository.findByIdAndCreatedBy(id, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)).orElseThrow(() -> new GlobalException("Couldn't find Payment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
         return paymentMapper.paymentToPaymentDto(payment);
     }
 
@@ -43,18 +43,18 @@ public class PaymentService { //TODO: implement service level validation for ent
 //            throw new GlobalException("Couldn't find an apartment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_BUILDING_NOT_FOUND, NoSuchElementException.class);
 //        }
         Sort sort = Sort.by(Sort.Direction.DESC, Payment.MONTH_PAYMENT_PROPERTY);
-        List<Payment> payments = paymentRepository.findByApartmentIdAndYearAndUserId(id, year, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE), sort);
+        List<Payment> payments = paymentRepository.findByApartmentIdAndYearAndCreatedBy(id, year, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE), sort);
         return paymentMapper.allPaymentsToPaymentDto(payments);
     }
 
     public PaymentDto updatePayment(PaymentDto paymentDto, Long id) {
-        Payment oldPayment = paymentRepository.findByIdAndUserId(id, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)).orElseThrow(() -> new GlobalException("Couldn't find a payment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
+        Payment oldPayment = paymentRepository.findByIdAndCreatedBy(id, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)).orElseThrow(() -> new GlobalException("Couldn't find a payment with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
         Payment updatedPayment = paymentMapper.paymentDtoToPayment(paymentDto);
 
         updatedPayment.setId(id);
         updatedPayment.setCreateDate(oldPayment.getCreateDate());
         updatedPayment.setModifiedDate(oldPayment.getModifiedDate());
-        updatedPayment.setUserId(oldPayment.getUserId());
+        updatedPayment.setCreatedBy(oldPayment.getCreatedBy());
 
         Payment savedPayment = paymentRepository.save(updatedPayment);
         return paymentMapper.paymentToPaymentDto(savedPayment);

@@ -1,15 +1,12 @@
 package apartment.manager.presentation.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Version;
-
 import java.util.Date;
 
 public class BaseDto {
     Long id;
     Date createDate;
     Date modifiedDate;
-    Long userId;
+    Long createdBy;
     Long version;
 
     public Long getId() {
@@ -36,12 +33,12 @@ public class BaseDto {
         this.modifiedDate = modifiedDate;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getCreatedBy() {
+        return createdBy;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Long getVersion() {

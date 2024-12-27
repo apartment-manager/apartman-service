@@ -40,27 +40,27 @@ public class BuildingService { // TODO: implement service level validation for e
     }
 
     public BuildingDto getBuildingById(Long id) {
-        Building building = buildingRepository.findByIdAndUserId(id, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)).orElseThrow(() -> new GlobalException("Couldn't find building with id :" + id, GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
-        building.setApartmentCount(apartmentRepository.countByBuildingAndUserId(building, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)));
+        Building building = buildingRepository.findByIdAndCreatedBy(id, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)).orElseThrow(() -> new GlobalException("Couldn't find building with id :" + id, GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
+        building.setApartmentCount(apartmentRepository.countByBuildingAndCreatedBy(building, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)));
         return buildingMapper.buildingToBuildingDto(building);
     }
 
     public List<BuildingDto> getAllBuildings() {
-        List<Building> buildings = buildingRepository.findAllByUserId((Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE));
+        List<Building> buildings = buildingRepository.findAllByCreatedBy((Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE));
         buildings.forEach(building -> {// TODO: handle getting user Id from session
-            building.setApartmentCount(apartmentRepository.countByBuildingAndUserId(building, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)));
+            building.setApartmentCount(apartmentRepository.countByBuildingAndCreatedBy(building, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)));
         });
         return buildingMapper.allBuildingToBuildingDto(buildings);
     }
 
     public BuildingDto updateBuilding(BuildingDto buildingDto, Long id) {
-        Building oldBuilding = buildingRepository.findByIdAndUserId(id, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)).orElseThrow(() -> new GlobalException("Couldn't find a building with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
+        Building oldBuilding = buildingRepository.findByIdAndCreatedBy(id, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)).orElseThrow(() -> new GlobalException("Couldn't find a building with id: {" + id + "}", GlobalExceptionCode.RESOURCE_NOT_FOUND, NoSuchElementException.class));
         Building updatedBuilding = buildingMapper.buildingDtoToBuilding(buildingDto);
 
         updatedBuilding.setId(id);
         updatedBuilding.setCreateDate(oldBuilding.getCreateDate());
         updatedBuilding.setModifiedDate(oldBuilding.getModifiedDate());
-        updatedBuilding.setUserId(oldBuilding.getUserId());
+        updatedBuilding.setCreatedBy(oldBuilding.getCreatedBy());
 
         Building savedBuilding = buildingRepository.save(updatedBuilding);
         return buildingMapper.buildingToBuildingDto(savedBuilding);

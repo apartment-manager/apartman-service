@@ -3,7 +3,6 @@ package apartment.manager.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,8 +17,6 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
     @Column
     private String email;
-    @Transient
-    private Long userId; // TODO: This didn't work, find a way to drop user ID from users table
 
     public String getName() {
         return name;
@@ -65,16 +62,6 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
-    }
-
-    @Override
-    public Long getUserId() {
-        return userId;
-    }
-
-    @Override
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public String getEmail() {

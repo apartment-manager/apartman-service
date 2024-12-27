@@ -4,6 +4,7 @@ import apartment.manager.entity.utils.Currency;
 import apartment.manager.entity.utils.PaymentType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.Filter;
 
@@ -11,16 +12,16 @@ import java.util.Date;
 
 @Entity
 @Table(name = "payments")
-@Filter(name = "userFilter", condition = "user_id  = :userId")
+@Filter(name = "userFilter", condition = BaseEntity.CREATED_BY_DATABASE_PROPERTY + "  = :createdBy")
 public class Payment extends BaseEntity {
+    public static final String MONTH_PAYMENT_PROPERTY = "month";
+    public static final String YEAR_PAYMENT_PROPERTY = "YEAR";
     @Column
     private Long apartmentId;
     @Column
     private Date paymentDate;
-    public static final String MONTH_PAYMENT_PROPERTY = "month";
     @Column
     private Integer month;
-    public static final String YEAR_PAYMENT_PROPERTY = "YEAR";
     @Column
     private Integer year;
     @Column
@@ -35,6 +36,13 @@ public class Payment extends BaseEntity {
     private Long chequeNumber;
     @Column
     private Date chequeDueDate;
+
+    @PrePersist
+    private void setDefaults() {
+        if (paymentDate == null) {
+            setPaymentDate(new Date());
+        }
+    }
 
     public Long getApartmentId() {
         return apartmentId;
