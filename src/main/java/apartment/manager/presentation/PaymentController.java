@@ -1,16 +1,17 @@
 package apartment.manager.presentation;
 
+import apartment.manager.Utilities.models.GlobalException;
+import apartment.manager.Utilities.models.GlobalExceptionCode;
 import apartment.manager.business.PaymentService;
-import apartment.manager.presentation.models.ApartmentPaymentsRequestDto;
 import apartment.manager.presentation.models.PaymentDto;
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/payments")
@@ -41,8 +42,11 @@ public class PaymentController {
 
     @GetMapping(path = "/apartment-payments/{apartmentId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<PaymentDto>> getApartmentPayments(@PathVariable("apartmentId") long apartmentId, @RequestBody() @Valid ApartmentPaymentsRequestDto apartmentPaymentsRequestDto) {
-        return ResponseEntity.ok().body(paymentService.getYearlyPaymentsByApartmentId(apartmentId, apartmentPaymentsRequestDto.getYear()));
+    public ResponseEntity<Object> getApartmentPayments(@PathVariable("apartmentId") long apartmentId, @RequestParam() @Valid Integer year) {
+        if (year == null) {
+            throw new GlobalException("Year parameter is missing", GlobalExceptionCode.VALIDATION, ValidationException.class);
+        }
+        return ResponseEntity.ok().body(paymentService.getYearlyPaymentsByApartmentId(apartmentId, year));
     }
 
     @PutMapping(path = "/{id}")
