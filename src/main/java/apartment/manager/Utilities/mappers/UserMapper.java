@@ -16,6 +16,8 @@ public abstract class UserMapper {
 
     public  abstract UserDto userToUserDto(User user);
 
+    @Mapping(target = "version", ignore = true)
+    @Mapping(target = "authorities", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createDate", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)

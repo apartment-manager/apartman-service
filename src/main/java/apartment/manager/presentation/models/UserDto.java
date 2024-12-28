@@ -1,17 +1,20 @@
 package apartment.manager.presentation.models;
 
 
+import apartment.manager.business.UserService;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class UserDto extends BaseDto {
     @NotBlank(message = "Email is required")
     private String email;
 
     @NotBlank(message = "Password is required")
+    @Pattern(regexp = UserService.PASSWORD_REGEX, message = UserService.PASSWORD_VALIDATION_MESSAGE)
     private String password;
 
     @NotBlank(message = "Name is required")

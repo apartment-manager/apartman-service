@@ -25,7 +25,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebSecurity
 public class WebConfig {
-    public static final String[] PUBLIC_URLS = {"/swagger-ui/**", "/authentication/**"};
+    public static final String[] PUBLIC_URLS = {"/swagger-ui/**", "/authentication/login"};
     public static String TIMEZONE;
     @Autowired
     UserService userService;

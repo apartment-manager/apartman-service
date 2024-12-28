@@ -58,7 +58,7 @@ public class ApartmentService { //TODO: implement service level validation for e
         try {
             savedApartment = apartmentRepository.save(apartment);
         } catch (DataIntegrityViolationException exception) {
-            throw new GlobalException("There exist an apartment with the name: {" + apartment.getName() + "} for the building: {" + apartment.getBuilding().getName() + "}", GlobalExceptionCode.UNIQUENESS, NoSuchElementException.class);
+            throw new GlobalException("There exist an apartment with the name: {" + apartment.getName() + "} for the building: {" + apartment.getBuilding().getName() + "}", GlobalExceptionCode.UNIQUENESS, DataIntegrityViolationException.class);
         }
         return apartmentMapper.apartmentToApartmentDto(savedApartment);
     }

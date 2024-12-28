@@ -1,7 +1,9 @@
 package apartment.manager.presentation.models;
 
 
+import apartment.manager.business.UserService;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +17,7 @@ public class UpdatePasswordDto {
     private String oldPassword;
 
     @NotBlank(message = "New password is required")
+    @Pattern(regexp = UserService.PASSWORD_REGEX, message = UserService.PASSWORD_VALIDATION_MESSAGE)
     private String newPassword;
 
     public String getEmail() {
