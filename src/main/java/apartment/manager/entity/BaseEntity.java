@@ -24,7 +24,7 @@ public class BaseEntity {
     Date modifiedDate;
     @Column(name = CREATED_BY_DATABASE_PROPERTY, nullable = false)
     Long createdBy;
-    @Version
+    //@Version //TODO: uncomment versioning
     Long version;
 
     public Long getId() {
