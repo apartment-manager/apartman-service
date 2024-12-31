@@ -14,9 +14,9 @@ import static apartment.manager.entity.Apartment.APARTMENT_TABLE_NAME;
 public class Apartment extends BaseEntity {
     public static final String APARTMENT_TABLE_NAME = "apartments";
     public static final String RENTAL_DETAILS_APARTMENT_FIELD = "rentalDetails";
-    public static final String BUILDING_ID_APARTMENT_FIELD = "rentalDetails";
+    public static final String BUILDING_ID_APARTMENT_FIELD = "building_id";
     public static final String NAME_APARTMENT_FIELD = "name";
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = BUILDING_ID_APARTMENT_FIELD)
     private Building building;
     @Column
