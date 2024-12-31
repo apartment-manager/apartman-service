@@ -20,6 +20,7 @@ public class BaseEntityListener {
         baseEntity.setCreateDate(now);
         baseEntity.setModifiedDate(now);  // When the entity was first created
         baseEntity.setCreatedBy((Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE));
+        baseEntity.setVersion(0L);
     }
 
     @PreUpdate
