@@ -32,8 +32,8 @@ import java.util.NoSuchElementException;
 
 @Service
 public class ApartmentService { //TODO: implement service level validation for entities
-    private static final long thirtyOneDays = 1000 * 60 * 60 * 24 * 31L;
-    private static final long thirtyDays = 1000 * 60 * 60 * 24 * 30L;
+    private static final long THIRTY_ONE_DAYS = 1000 * 60 * 60 * 24 * 31L;
+    private static final long TWENTY_SEVEN_DAYS = 1000 * 60 * 60 * 24 * 27L;
     private final ApartmentRepository apartmentRepository;
     @Autowired
     HttpSession session;
@@ -108,16 +108,16 @@ public class ApartmentService { //TODO: implement service level validation for e
     }
 
     /**
-     * Updates the payment due dats for all the apartments
+     * Updates the payment due dats for all the apartments, the job runs every twenty
      */
-    @Scheduled(fixedRate = thirtyDays, initialDelay = 1000 * 60)
+    @Scheduled(fixedRate = TWENTY_SEVEN_DAYS, initialDelay = 1000 * 60)
     public void updateApartmentPaymentDueDatesJob() {
         System.out.println("Starting scheduled job at:" + new Date());
         List<Apartment> apartments = apartmentRepository.findAll();
         for (Apartment apartment : apartments) {
             if (apartment.getRentalDetails() != null && apartment.getRentalDetails().getPaymentDueDates() != null && !apartment.getRentalDetails().getPaymentDueDates().isEmpty()) {
                 Date lastPaymentDueDate = apartment.getRentalDetails().getPaymentDueDates().getLast();
-                Date oneMonthLater = new Date(new Date().getTime() + thirtyOneDays);
+                Date oneMonthLater = new Date(new Date().getTime() + THIRTY_ONE_DAYS);
                 if (lastPaymentDueDate.before(oneMonthLater)) {
                     apartment.getRentalDetails().addTwoPaymentDueDates(lastPaymentDueDate);
                     apartmentRepository.save(apartment);
