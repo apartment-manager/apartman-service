@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Positive;
 
 public class ApartmentDto extends BaseDto {
     @NotBlank(message = "Apartment 'name' is a mandatory field")
-    private String name;
+    private Integer name;
     @NotNull(message = "Apartment 'buildingId' is a mandatory field")
     @Positive
     private Long buildingId;
@@ -19,11 +19,11 @@ public class ApartmentDto extends BaseDto {
     private Integer numberOfRooms;
     private RentalDetailsDto rentalDetails;
 
-    public String getName() {
+    public Integer getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Integer name) {
         this.name = name;
     }
 

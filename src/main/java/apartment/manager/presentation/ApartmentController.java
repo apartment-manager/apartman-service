@@ -72,7 +72,7 @@ public class ApartmentController {
 
     @GetMapping(path = "/search")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<ApartmentDto>> searchApartments(@RequestParam("query") String query) {
+    public ResponseEntity<List<ApartmentDto>> searchApartments(@RequestParam("query") Integer query) {
         return ResponseEntity.ok().body(apartmentService.searchApartments(query));
     }
 }

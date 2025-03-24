@@ -22,6 +22,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,7 @@ public class ApartmentService { //TODO: implement service level validation for e
     }
 
     public List<ApartmentDto> getApartmentsByBuildingId(Long id) {
-        return apartmentMapper.allApartmentToApartmentDto(apartmentRepository.findByBuildingIdAndCreatedBy(id, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)));
+        return apartmentMapper.allApartmentToApartmentDto(apartmentRepository.findByBuildingIdAndCreatedBy(id, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE), Sort.by(Sort.Order.asc(Apartment.NAME_APARTMENT_FIELD))));
     }
 
     public boolean rentApartment(Long id, RentalDetailsDto rentalDetailsDto) {
@@ -141,8 +142,8 @@ public class ApartmentService { //TODO: implement service level validation for e
         return apartmentMapper.apartmentToApartmentDto(savedApartment);
     }
 
-    public List<ApartmentDto> searchApartments(String query) {
-        return apartmentMapper.allApartmentToApartmentDto(apartmentRepository.findByNameContainingIgnoreCaseAndCreatedBy(query, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)));
+    public List<ApartmentDto> searchApartments(Integer query) {
+        return apartmentMapper.allApartmentToApartmentDto(apartmentRepository.findByNameAndCreatedBy(query, (Long) session.getAttribute(JwtAuthenticationFilter.USER_ID_SESSION_ATTRIBUTE)));
     }
 
     @Transactional

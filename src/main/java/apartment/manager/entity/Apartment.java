@@ -20,7 +20,7 @@ public class Apartment extends BaseEntity {
     @JoinColumn(name = BUILDING_ID_APARTMENT_FIELD)
     private Building building;
     @Column
-    private String name;
+    private Integer name;
     @Column
     private ApartmentType type;
     @Column
@@ -35,7 +35,7 @@ public class Apartment extends BaseEntity {
     @Column
     private Integer numberOfRooms;
 
-    public Apartment(Building building, String name) {
+    public Apartment(Building building, Integer name) {
         this.building = building;
         this.name = name;
     }
@@ -52,11 +52,11 @@ public class Apartment extends BaseEntity {
         this.building = building;
     }
 
-    public String getName() {
+    public Integer getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Integer name) {
         this.name = name;
     }
 
