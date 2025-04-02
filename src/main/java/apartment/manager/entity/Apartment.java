@@ -1,21 +1,41 @@
 package apartment.manager.entity;
 
+import apartment.manager.entity.details.BaseRentalDetails;
+import apartment.manager.entity.utils.ApartmentType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Filter;
+
+import static apartment.manager.entity.Apartment.APARTMENT_TABLE_NAME;
 
 @Entity
-@Table(name = "apartments")
-public class Apartment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
-    @Column(name="apartment_id")
-    private Long id;
+@Filter(name = "userFilter", condition = BaseEntity.CREATED_BY_DATABASE_PROPERTY + "  = :createdBy")
+@Table(name = APARTMENT_TABLE_NAME, uniqueConstraints = @UniqueConstraint(columnNames = {Apartment.NAME_APARTMENT_FIELD, Apartment.BUILDING_ID_APARTMENT_FIELD}))
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class Apartment extends BaseEntity {
+    public static final String APARTMENT_TABLE_NAME = "apartments";
+    public static final String RENTAL_DETAILS_APARTMENT_FIELD = "rentalDetails";
+    public static final String BUILDING_ID_APARTMENT_FIELD = "building_id";
+    public static final String NAME_APARTMENT_FIELD = "name";
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "building_id")
+    @JoinColumn(name = BUILDING_ID_APARTMENT_FIELD)
     private Building building;
     @Column
-    private String name;
+    private Integer name;
+    @Column
+    private ApartmentType type;
+    @Column
+    private String description;
+    @Column
+    private Boolean isAvailable;
 
-    public Apartment(Building building, String name) {
+    @Column
+    @Embedded
+    private BaseRentalDetails rentalDetails;
+
+    @Column
+    private Integer numberOfRooms;
+
+    public Apartment(Building building, Integer name) {
         this.building = building;
         this.name = name;
     }
@@ -23,13 +43,6 @@ public class Apartment {
     public Apartment() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Building getBuilding() {
         return building;
@@ -39,11 +52,51 @@ public class Apartment {
         this.building = building;
     }
 
-    public String getName() {
+    public Integer getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Integer name) {
         this.name = name;
+    }
+
+    public ApartmentType getType() {
+        return type;
+    }
+
+    public void setType(ApartmentType type) {
+        this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
+    public Integer getNumberOfRooms() {
+        return numberOfRooms;
+    }
+
+    public void setNumberOfRooms(Integer numberOfRooms) {
+        this.numberOfRooms = numberOfRooms;
+    }
+
+    public BaseRentalDetails getRentalDetails() {
+        return rentalDetails;
+    }
+
+    public void setRentalDetails(BaseRentalDetails rentalDetails) {
+        this.rentalDetails = rentalDetails;
     }
 }

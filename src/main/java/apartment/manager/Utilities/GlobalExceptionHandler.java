@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -20,7 +21,6 @@ import java.util.Date;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Autowired
     ExceptionToHttpStatusMapper exceptionToHttpStatusMapper;
-
     /**
      * Exception handler for {@link MethodArgumentNotValidException} This kind of exceptions is caused by violations to the validation Criteria defined by the
      * Annotations like {{@link jakarta.validation.constraints.NotBlank}}
@@ -39,11 +39,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         errors.delete(errors.length() - 2, errors.length());
         errors.append("}");
-        return createErrorResponse(errors.toString(), HttpStatus.BAD_REQUEST, GlobalExceptionCode.ERROR_003, request);
+        return createErrorResponse(errors.toString(), HttpStatus.BAD_REQUEST, GlobalExceptionCode.VALIDATION, request);
+    }
+
+    /**
+     * Handles errors occur when the user provides a version different from the version exist in the database, indicating that the object has
+     * changes that was updated after fetching the object from the database
+     */
+    @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
+    private final ResponseEntity<Object> handleIncorrectVersionException(ObjectOptimisticLockingFailureException exception, WebRequest request) {
+        HttpStatus httpStatus = exceptionToHttpStatusMapper.getHttpStatus(ObjectOptimisticLockingFailureException.class);
+        String message = "Version conflict detected. This indicates that the record you are trying to update was deleted or updated by another transaction. Please try to get the up to date record and try updating it again. Make sure to include the 'version' field with the correct version";
+        return createErrorResponse(message, httpStatus, GlobalExceptionCode.INCORRECT_VERSION, request);
     }
 
     @ExceptionHandler(GlobalException.class)
-    private final ResponseEntity<Object> handleException(GlobalException exception, WebRequest request) {
+    private final ResponseEntity<Object> handleGlobalException(GlobalException exception, WebRequest request) {
         HttpStatus httpStatus = exceptionToHttpStatusMapper.getHttpStatus(exception.getException());
         return createErrorResponse(exception.getMessage(), httpStatus, exception.getCode(), request);
     }
